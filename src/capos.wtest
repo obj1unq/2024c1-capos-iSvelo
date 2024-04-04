@@ -1,0 +1,54 @@
+import capos.*
+import castillo.*
+
+describe "comportamiento de rolando con los artefactos" {
+
+	test "rolando encuentra la espada del destino (la agarra)
+		  rolando encuentra el libro de hechizos (la agarra)
+		  rolando encuentra el collar divino (no lo agarra" {
+		rolando.levanta(espadaDelDestino)
+		rolando.levanta(libroDeHechizos)
+		rolando.levanta(collarDivino)
+		assert.equals(2, rolando.artefactos().size())
+	}
+
+	test "rolando encuentra la espada del destino (la agarra)
+rolando encuentra el libro de hechizos (la agarra)
+rolando llega al castillo de piedra (deja en el castillo la espada y el libro de hechizos)
+rolando encuentra el collar divino (ahora si lo puede agarrar, ya que liberó espacio)
+rolando llega al castillo de piedra de nuevo(deja el collar, con lo cual ahora el castillo tiene el collar, la espada y el libro)" {
+		rolando.levanta(espadaDelDestino)
+		rolando.levanta(libroDeHechizos)
+		assert.equals(2, rolando.artefactos().size())
+		rolando.irAlHogar()
+		assert.equals(0, rolando.artefactos().size())
+		assert.equals(2, castilloDePiedra.cofre().size())
+		rolando.levanta(collarDivino)
+		rolando.irAlHogar()
+		assert.that(castilloDePiedra.cofre().contains(espadaDelDestino))
+		assert.that(castilloDePiedra.cofre().contains(libroDeHechizos))
+		assert.that(castilloDePiedra.cofre().contains(collarDivino))
+	}
+
+	test "Si el castillo tiene el collar, la espada. 
+		Rolando tiene la armadura. Entonces rolando posee el collar, la espada y la armadura.
+			 El libro no lo posee." {
+		rolando.levanta(espadaDelDestino)
+		rolando.levanta(collarDivino)
+		rolando.irAlHogar()
+		rolando.levanta(armaduraDeAceroValyrio) 
+		assert.that(rolando.posee(espadaDelDestino))
+		assert.that(rolando.posee(collarDivino))
+		assert.that(rolando.posee(armaduraDeAceroValyrio))
+		assert.notThat(rolando.posee(libroDeHechizos))
+	}
+
+	test "a" {
+		rolando.levanta(espadaDelDestino)
+		rolando.levanta(libroDeHechizos)
+		rolando.levanta(collarDivino)
+		assert.equals(2, rolando.artefactos().size())
+	}
+
+}
+
